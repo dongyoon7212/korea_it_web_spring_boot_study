@@ -1,6 +1,7 @@
 package com.koreait.spring_boot_study.controller;
 
 import com.koreait.spring_boot_study.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/post")
 public class PostController {
-    private final PostService postService;
+
+    //Autowired
+    @Autowired //필요한 객체를 자동으로 주입해주는 어노테이션
+    private PostService postService;
+    //PostService를 주입되기전 시점에서 사용하게 되면 NPE이 발생할 수도 있다
+    //예를들어서 생성자에서 바로 쓴다거나 아니면 서비스, 레포지토리 어노테이션을 안붙였거나
+//    private final PostService postService;
 
     //Inversion Of Control => 제어의 역전
     //객체 생성과 제어의 주도권을 개발자가 아닌, 스프링부트가 갖는 것
@@ -33,9 +40,14 @@ public class PostController {
     //의존성 주입, Dependency Injection => DI
     //필요한 객체(의존성)를 직접 만들지 않고, 외부(스프링부트)에서 대신 넣어주는 것
 
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
+//    public PostController() {
+//        postService.getPost();
+//    }
+    //생성자 방식이 더 권장된다 => 명시적이고 명확
+    //final이 있기에 불변을 보장
+    //생성자로 주입하면 객체가 생성될 때 필수로 의존성을 받아야 합니다.
+    //그러면 이후에 그 의존성을 바꿀 수 없어서 안정적
+    //애초에 객체 생성이 되기도 전에 생성자를 통해 주입이 완료됨, 생성 전부터 준가 완료됨
 
     @GetMapping("/get")
     public String getPost() {
