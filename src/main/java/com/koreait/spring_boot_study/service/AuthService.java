@@ -29,6 +29,16 @@ public class AuthService {
             );
             return signupRespDto;
         }
+
+        int chkEmail = authRepository.findByEmail(signupReqDto.getEmail());
+        if(chkEmail == 1) {
+            authRepository.addUser(signupReqDto);
+            return new SignupRespDto("success", signupReqDto.getUsername() + "님 회원가입이 완료되었습니다.");
+        } else if(chkEmail == 0) {
+            return new SignupRespDto("failed", "이미 존재하는 이메일입니다.");
+        }
+
+        return new SignupRespDto("failed", "회원가입에 오류가 발생했습니다. 다시 시도해주세요.");
     }
 
 }
