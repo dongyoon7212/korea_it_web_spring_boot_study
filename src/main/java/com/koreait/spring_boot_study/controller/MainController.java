@@ -72,5 +72,11 @@ public class MainController {
         return "signup-result";
     }
 
+    @GetMapping("/users")
+    public String userList(Model model) {
+        model.addAttribute("users", users);
+        return "users";
+    }
+
 
 }
